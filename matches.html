@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lupaa Matches Today</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #0f0c29, #302b63, #24243e);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Orbitron', sans-serif;
+    color: #00ffea;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: #00ffea;
+    text-shadow:
+      0 0 10px #00ffe7,
+      0 0 20px #00ffe7,
+      0 0 40px #00ffe7,
+      0 0 80px #00ffe7;
+    animation: neonPulse 3s ease-in-out infinite;
+  }
+
+  .match {
+    background: rgba(0, 255, 234, 0.1);
+    border: 2px solid #00ffe7;
+    border-radius: 15px;
+    padding: 25px 40px;
+    margin: 15px 0;
+    width: 85vw;
+    max-width: 800px;
+    font-size: 2.5rem;
+    text-align: center;
+    box-shadow:
+      0 0 10px #00ffe7,
+      0 0 20px #00ffe7,
+      0 0 40px #00ffe7,
+      0 0 80px #00ffe7;
+    cursor: default;
+    animation: bounceIn 1s ease forwards;
+  }
+
+  .match:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes neonPulse {
+    0%, 100% {
+      text-shadow:
+        0 0 10px #00ffe7,
+        0 0 20px #00ffe7,
+        0 0 40px #00ffe7,
+        0 0 80px #00ffe7;
+      color: #00ffea;
+    }
+    50% {
+      text-shadow:
+        0 0 20px #00ffea,
+        0 0 40px #00ffea,
+        0 0 80px #00ffea,
+        0 0 120px #00ffea;
+      color: #00ffff;
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    60% {
+      transform: translateY(-20px);
+      opacity: 1;
+    }
+    80% {
+      transform: translateY(10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  /* Bonus: subtle animated background lines */
+  body::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      repeating-linear-gradient(45deg, #00ffe7, #00ffe7 2px, transparent 2px, transparent 10px),
+      repeating-linear-gradient(-45deg, #00ffe7, #00ffe7 2px, transparent 2px, transparent 10px);
+    animation: moveBackground 15s linear infinite;
+    opacity: 0.05;
+    z-index: 0;
+  }
+
+  @keyframes moveBackground {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 100px 100px, -100px -100px; }
+  }
+
+</style>
+</head>
+<body>
+  <h1>Lupaa Matches Today</h1>
+  <div id="match1" class="match">Loading Match 1...</div>
+  <div id="match2" class="match">Loading Match 2...</div>
+
+  <script>
+    async function loadMatches() {
+      try {
+        const response = await fetch('todaymatch.json');
+        if (!response.ok) throw new Error('Failed to load JSON');
+        const data = await response.json();
+
+        document.getElementById('match1').textContent = data['Match 1'] || 'No Match 1 today';
+        document.getElementById('match2').textContent = data['Match 2'] || 'No Match 2 today';
+      } catch (err) {
+        document.getElementById('match1').textContent = 'Error loading matches';
+        document.getElementById('match2').textContent = '';
+        console.error(err);
+      }
+    }
+
+    loadMatches();
+  </script>
+</body>
+</html>
